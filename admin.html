@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - ElectraHubHD</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #000;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #111;
+            border-radius: 10px;
+        }
+
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+        }
+
+        button {
+            cursor: pointer;
+            background: red;
+            color: white;
+            font-weight: bold;
+        }
+
+        #moviesList {
+            margin-top: 20px;
+        }
+
+        .movie-item {
+            background: #222;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .delete-btn {
+            background: darkred;
+            margin-top: 10px;
+        }
+        
+        .copy-btn {
+            background: green;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Admin Panel - Manage Movies</h1>
+
+    <div class="container">
+        <h3>Add Movie</h3>
+        <input type="text" id="title" placeholder="Movie Title">
+        <input type="text" id="imageURL" placeholder="Image URL">
+        <textarea id="description" placeholder="Movie Description"></textarea>
+        <input type="text" id="downloadLink" placeholder="Download Link">
+        <button onclick="addMovie()">Add Movie</button>
+    </div>
+
+    <div class="container">
+        <h3>Image URL Generator</h3>
+        <input type="file" id="imageUpload">
+        <button onclick="uploadImage()">Generate URL</button>
+        <input type="text" id="generatedURL" readonly>
+        <button class="copy-btn" onclick="copyImageURL()">Copy URL</button>
+    </div>
+
+    <div class="container">
+        <h3>Uploaded Movies</h3>
+        <div id="moviesList"></div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", loadMovies);
+
+        function addMovie() {
+            let title = document.getElementById("title").value;
+            let image = document.getElementById("imageURL").value;
+            let description = document.getElementById("description").value;
+            let downloadLink = document.getElementById("downloadLink").value;
+
+            if (title && image && description) {
+                let movies = JSON.parse(localStorage.getItem("movies")) || [];
+                movies.push({ title, image, description, downloadLink });
+                localStorage.setItem("movies", JSON.stringify(movies));
+                loadMovies();
+                alert("Movie added successfully!");
+            } else {
+                alert("Please fill all fields!");
+            }
+        }
+
+        function loadMovies() {
+            let moviesList = document.getElementById("moviesList");
+            moviesList.innerHTML = "";
+            let movies = JSON.parse(localStorage.getItem("movies")) || [];
+
+            movies.forEach((movie, index) => {
+                let movieItem = document.createElement("div");
+                movieItem.classList.add("movie-item");
+                movieItem.innerHTML = `
+                    <h4>${movie.title}</h4>
+                    <img src="${movie.image}" width="100" alt="Movie Image">
+                    <p>${movie.description}</p>
+                    <a href="${movie.downloadLink}" target="_blank">Download Link</a>
+                    <button class="delete-btn" onclick="deleteMovie(${index})">Delete</button>
+                `;
+                moviesList.appendChild(movieItem);
+            });
+        }
+
+        function deleteMovie(index) {
+            let movies = JSON.parse(localStorage.getItem("movies")) || [];
+            movies.splice(index, 1);
+            localStorage.setItem("movies", JSON.stringify(movies));
+            loadMovies();
+        }
+
+        function uploadImage() {
+            let fileInput = document.getElementById("imageUpload").files[0];
+
+            if (fileInput) {
+                let reader = new FileReader();
+                reader.onload = function (event) {
+                    let imageUrl = event.target.result;
+                    document.getElementById("generatedURL").value = imageUrl;
+                };
+                reader.readAsDataURL(fileInput);
+            } else {
+                alert("Please select an image first!");
+            }
+        }
+
+        function copyImageURL() {
+            let copyText = document.getElementById("generatedURL");
+            copyText.select();
+            document.execCommand("copy");
+            alert("URL copied to clipboard!");
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+body {
+    font-size: 15pt;
+}
+.option {
+    background-color: #333;
+    padding: 20px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    font-size: 22px;
+    text-align: center;
+    cursor: pointer;
+    color: #fff;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.option:hover {
+    background-color: #ff5722;
+    transform: translateY(-5px);
+}
+.navbar {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.navbar a:hover {
+    color: #ff5722;
+}
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+}
+.back-button:hover {
+    background-color: #e64a19;
+}
+
+
+.typing-animation {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    margin-top: 30px;
+    white-space: nowrap; /* Prevents text from wrapping */
+    overflow: hidden; /* Hides the part of the text that hasn't been typed yet */
+    border-right: 3px solid white; /* Creates the cursor effect */
+    width: 0;
+    animation: typing 4s steps(40) 1s infinite, blinkCaret 0.75s step-end infinite;
+}
+
+/* Typing animation */
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+/* Blinking cursor effect */
+@keyframes blinkCaret {
+    50% {
+        border-color: transparent;
+    }
+}

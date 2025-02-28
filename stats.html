@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics - ElectraHubHD</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background: #1c1c1c;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            background: #222;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 30px;
+            color: #ff5722;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 28px;
+            color: #ff5722;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 20px;
+            line-height: 1.6;
+        }
+
+        .stats {
+            margin-top: 30px;
+            background: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .stats ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .stats li {
+            font-size: 18px;
+            margin: 15px 0;
+            background: #444;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .back-button {
+            margin-top: 30px;
+            padding: 15px 25px;
+            font-size: 18px;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto;
+        }
+
+        .back-button:hover {
+            background-color: #e64a19;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="index.html">ElectraHubHD</a>
+    </div>
+
+    <!-- Container -->
+    <div class="container">
+        <h1>Admin Statistics</h1>
+        <p>Here you can see detailed statistics about the views on the home page and the number of clicks on each movie.</p>
+
+        <!-- Stats Section -->
+        <div class="stats">
+            <h2>Home Page Views:</h2>
+            <p id="homePageViews">Loading...</p>
+
+            <h2>Movie Clicks:</h2>
+            <div id="movieClicks">Loading...</div>
+        </div>
+
+        <!-- Back to Dashboard Button -->
+        <button class="back-button" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get and display home page views
+            const homePageViews = localStorage.getItem("homePageViews");
+            document.getElementById("homePageViews").textContent = homePageViews ? homePageViews : "0";
+
+            // Get and display individual movie clicks
+            const movieClicks = [];
+            let movies = JSON.parse(localStorage.getItem("movies")) || [];
+            movies.forEach(movie => {
+                let movieClickCount = localStorage.getItem(movie.id);
+                movieClicks.push(`${movie.title}: ${movieClickCount ? movieClickCount : 0} clicks`);
+            });
+
+            // Display movie clicks on the page
+            document.getElementById("movieClicks").innerHTML = movieClicks.join("<br>");
+        });
+    </script>
+
+</body>
+</html>
